@@ -121,27 +121,33 @@ a:hover {
 }
 */
 
-.menu {
+.navbar .menu {
   height: 53px;
+  width: 122px;
   display: flex;
   align-items: center;
   background-color: rgba(0,0,0,0.25);
   border: 1px solid rgba(255, 255, 255, 0.25);
   padding: 0 1.5rem;
   border-radius: 30px;
+  position: relative;
+  transition: 0.5s;
+  overflow: hidden;
 }
 
-.menu .links {
-  display: none;
+.navbar .menu.open {
+  width: 620px;
+  transition: 0.5s;
 }
 
-.menu .links ul {
+.navbar .menu .links ul {
   display: flex;
   padding: 0;
   margin: 0;
 }
 
-.menu .links li {
+.navbar .menu .links li {
+  display: none;
   list-style: none;
   font-weight: bold;
   text-transform: uppercase;
@@ -149,44 +155,60 @@ a:hover {
   margin-right: 1.5rem;
 }
 
-.menu .links li:last-child {
+.navbar .menu .links li:last-child {
   margin-right: 0;
 }
 
-.menu .links li a {
+.navbar .menu.open li {
+  display: block;
+}
+
+.navbar .menu .links li a {
   font-size: 14px;
   color: #ffffff;
   transition: 0.3s;
+  white-space: nowrap;
 }
 
-.menu .links li a:hover {
+.navbar .menu .links li a:hover {
   color: #d6d6d6;
   transition: 0.3s;
 }
 
-.menu.open > span {
-  display: none;
+.navbar .menu span.menu-text {
+  position: absolute;
+  left: 1.5rem;
+  opacity: 1;
+  transition: 0.3s;
 }
 
-.menu span {
+.navbar .menu.open span.menu-text {
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.navbar .menu span {
   font-size: 11px;
   text-transform: uppercase;
   font-weight: bold;
+  pointer-events: none;
 }
 
-.navbar-toggler {
+.navbar .navbar-toggler {
   border-right: none;
   height: 46px;
-  position: relative;
+  position: absolute;
+  right: 1.5rem;
   padding-right: 0;
   transition: opacity .35s;
+  margin: auto 0 auto auto;
 }
 
-.navbar-toggler:focus, header .navbar-toggler:active {
+.navbar .navbar-toggler:focus, header .navbar-toggler:active {
   outline: 0; 
 }
 
-.navbar-toggler span {
+.navbar .navbar-toggler span {
   display: block;
   background-color: white;
   height: 3px;
@@ -202,14 +224,14 @@ a:hover {
   opacity: 1; 
 }
 
-.navbar-toggler span:nth-child(1), .navbar-toggler span:nth-child(3) {
+.navbar .navbar-toggler span:nth-child(1), .navbar-toggler span:nth-child(3) {
   -webkit-transition: transform .35s ease-in-out;
   -moz-transition: transform .35s ease-in-out;
   -o-transition: transform .35s ease-in-out;
   transition: transform .35s ease-in-out; 
 }
 
-.navbar-toggler:not(.collapsed) span:nth-child(1) {
+.navbar .navbar-toggler:not(.collapsed) span:nth-child(1) {
   position: absolute;
   left: 13px;
   top: 16px;
@@ -220,14 +242,14 @@ a:hover {
   opacity: 0.9; 
 }
 
-.navbar-toggler:not(.collapsed) span:nth-child(2) {
+.navbar .navbar-toggler:not(.collapsed) span:nth-child(2) {
   height: 12px;
   visibility: hidden;
   background-color: transparent;
   transition: 0.3s;
 }
 
-.navbar-toggler:not(.collapsed) span:nth-child(3) {
+.navbar .navbar-toggler:not(.collapsed) span:nth-child(3) {
   position: absolute;
   left: 13px;
   top: 16px;
@@ -237,6 +259,13 @@ a:hover {
   transform: rotate(-90deg);
   opacity: 0.9; 
 }
+
+nav {
+  display: none;
+}
+
+/* ------------------ NAVBAR MOBILE -------------------- */
+
 
 
 /* ------------------ MAIN -------------------- */
@@ -784,8 +813,20 @@ footer img {
 /* ------------------ MEDIA BREAKS -------------------- */
 
 @media (max-width: 575px) {
+  body {
+    padding-top: 0;
+  }
+  header {
+    display: none;
+  }
+  nav {
+    display: block;
+  }
   .section-1 {
     border-radius: 0;
+  }
+  .section-1 #end-plus hr:nth-child(2) {
+    transform: rotate(0);
   }
   .section-2 #container {
     bottom: 18% !important;
@@ -797,6 +838,7 @@ footer img {
   }
   .section-3 {
     border-radius: 0;
+    padding: 210px 20px 50px 20px !important;
   }
   .section-4 {
     border-radius: 0;
@@ -806,17 +848,41 @@ footer img {
   }
   .section-3 .avion {
     left: -120px !important;
-    bottom: 240px !important;
+    bottom: auto !important;
+    top: 255px;
+  }
+  .section-3 .planeta {
+    right: -165px !important;
+    bottom: -125px !important;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .navbar .menu.open {
+    width: 535px;
+    transition: 0.5s;
+  }
+  .navbar .menu .links li a {
+    font-size: 12px;
+    color: #ffffff;
+    transition: 0.3s;
+    white-space: nowrap;
   }
 }
 
 @media (max-width: 768px) {
   .section-1 .avion {
-    top: 290px;
+    top: 320px;
     left: -110px;
   }
   .section-1 hr {
-    margin: 7.375rem auto 7.375rem 0;
+    margin: 8.375rem auto 8.375rem 0;
+  }
+  .section-3 .mouse hr {
+    position: relative;
+    left: 15px;
+    top: 26px;
+    margin: 70px 0;
   }
 }
 
@@ -830,9 +896,16 @@ footer img {
     text-transform: uppercase;
     margin-bottom: 2.25rem;
   }
-  .overlay ul li::after {
-    width: 60px;
-    margin-left: -2.28rem;
+  .navbar .container {
+    padding-left: 0;
+    padding-right: 0;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+  .navbar .menu {
+    margin-top: 1.5rem;
   }
   .line-break-center hr {
     margin: 4.375rem auto 4.375rem auto;
@@ -883,7 +956,7 @@ footer img {
   }
   .section-3 .planeta {
     right: -165px;
-    bottom: 230px;
+    bottom: 275px;
   }
   .section-3 .avion {
     position: absolute;

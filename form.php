@@ -23,7 +23,7 @@
 		
 		$mail->Host='';
 
-		$mail->Port=;
+		$mail->Port=asd;
 
 		$mail->Username = '';
 
