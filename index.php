@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/animate.min.css">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="icon" type="image/png" href="favicon.ico"/>
 </head>
   <body>
 
@@ -300,7 +301,7 @@
                     <div class="iconos-formulario">
                       <img src="images/icon-mail.svg" alt="icono mail">
                     </div>
-                    <input type="email" name="mail" placeholder="MAIL">
+                    <input type="email" name="email" placeholder="MAIL">
                   </div>
                 </div>
                 <input type="submit" id="btn_enviar" value="Contactenos" class="btn btn-secondary wow animate__animated animate__fadeInDown">

@@ -1,76 +1,92 @@
-<?php 
-		require("src/PHPMailer.php");
-		require("src/SMTP.php");
+<?php
 
-		$nombre = $_POST['nombre'];
-		$apellido = $_POST['apellido'];
-		$telefono = $_POST['telefono'];
-		$mail = $_POST['mail'];
+require("src/PHPMailer.php");
+require("src/SMTP.php");
 
-		$mail = new PHPMailer();
+// Valores enviados desde el formulario
+if ( !isset($_POST["nombre"]) || !isset($_POST["apellido"]) || !isset($_POST["telefono"])  || !isset($_POST["email"]) ) {
+    die ("Es necesario completar todos los datos del formulario");
+}
 
-		$mail->IsHTML(true);
+$nombre = $_POST["nombre"];
 
-		$mail->IsSMTP();
+$apellido = $_POST["apellido"];
 
-		$mail->SMTPSecure = "ssl";
+$telefono = $_POST["telefono"];
 
-		//$mail->SMTPDebug=1;
+$email = $_POST["email"];
 
-		$mail->SMTPAuth=true;
+$destinatario = ""; // Correo al que llegará la consulta //
 
-		$mail->Mailer="";
-		
-		$mail->Host='';
+// Datos de la cuenta de correo utilizada para enviar vía SMTP
+$smtpHost = "";  // Dominio alternativo brindado en el email de alta
+$smtpUsuario = "";  // Mi cuenta de correo
+$smtpClave = "";  // Mi contraseña
 
-		$mail->Port=asd;
+$mail = new PHPMailer();
+$mail->IsSMTP();
+$mail->SMTPAuth = true;
+$mail->SMTPSecure       =   "ssl";
+$mail->Mailer           =   "smtp";
+$mail->Port = 465;
+$mail->IsHTML(true);
+$mail->CharSet = "utf-8";
 
-		$mail->Username = '';
+$mail->SMTPDebug=0;
 
-		$mail->Password = '';
+// VALORES A MODIFICAR //
+$mail->Host = $smtpHost;
+$mail->Username = $smtpUsuario;
+$mail->Password = $smtpClave;
 
-		$mail->From = $email;
 
-		$mail->FromName = $nombre;
+$mail->From = $smtpUsuario; // Email desde donde envío el correo.
+$mail->FromName = $nombre;
+$mail->AddAddress($destinatario); // Esta es la dirección a donde enviamos los datos del formulario
 
-		$mail->AddAddress('');
+$mail->Subject = $nombre . ' ' . $apellido . ' quiere contactarse con CNEO.'; // Este es el titulo del email.
 
-		$mail->Subject = $nombre . ' ' . $apellido . 'quiere contactarse con CNEO.';
+$html = '
 
-		$mail->CharSet = 'UTF-8';
+	<html>
 
-		$mail->AltBody= "" ;
+		<body>
 
-		$html = '
+			<h1>Nuevo pedido de contacto</h1>
 
-			<html>
+			<hr>
 
-				<body>
+			<p><b>Nombre: </b> '.$nombre.' </p>
 
-					<h1>Nuevo pedido de contacto</h1>
+			<p><b>Apellido: </b> '.$apellido.' </p>
 
-					<hr>
+			<p><b>Telefono: </b> '.$telefono.' </p>
+			
+			<p><b>E-mail: </b> '.$email.' </p>
 
-					<p><b>Nombre: </b> '.$nombre.' </p>
+		</body>
 
-					<p><b>apellido: </b> '.$apellido.' </p>
+	</html>
 
-					<p><b>Telefono: </b> '.$telefono.' </p>
-					
-					<p><b>E-mail: </b> '.$mail.' </p>
+';
 
-				</body>
+$mail->Body = $html; // Texto del email en formato HTML
+$mail->AltBody= "" ; // Texto sin formato HTML
+// FIN - VALORES A MODIFICAR //
 
-			</html>
+$mail->SMTPOptions = array(
+    'ssl' => array(
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+        'allow_self_signed' => true
+    )
+);
 
-		';
+$estadoEnvio = $mail->Send();
+if($estadoEnvio){
+    echo "El correo fue enviado correctamente.";
+} else {
+    echo "Ocurrió un error inesperado.";
+}
 
-		$mail->Body = $html;
-		$exito = $mail->Send();
-
-		if ($exito){
-   			echo "success";
-		}else{
-		    echo "invalid";
-		}
- ?>
+?>
